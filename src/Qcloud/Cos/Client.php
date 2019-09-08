@@ -54,10 +54,13 @@ class Client extends GSClient {
         $this->timeout = isset($config['timeout']) ? $config['timeout'] : 3600;
         $this->connect_timeout = isset($config['connect_timeout']) ? $config['connect_timeout'] : 3600;
         $this->signature = new signature($this->secretId, $this->secretKey);
+        $httpProxy = $this->schema == 'HTTP' ? (isset($config['proxy']['http']) ? $config['proxy']['http'] : null) : (isset($config['proxy']['https']) ? $config['proxy']['https'] : null);
         parent::__construct(
             $this->schema.'://cos.' . $this->region . '.myqcloud.com/',    // base url
-            array('request.options' => array('timeout' => $this->timeout, 'connect_timeout' => $this->connect_timeout),
+            array('request.options' => array('timeout' => $this->timeout, 'connect_timeout' => $this->connect_timeout,
+                                             'proxy'=> $httpProxy),
             )); // show curl verbose or not
+
         $desc = ServiceDescription::factory(Service::getService());
         $this->setDescription($desc);
         $this->setUserAgent('cos-php-sdk-v5.' . Client::VERSION, true);
