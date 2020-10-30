@@ -56,7 +56,7 @@ class Client extends GSClient {
         $this->signature = new signature($this->secretId, $this->secretKey);
         $httpProxy = $this->schema == 'HTTP' ? (isset($config['proxy']['http']) ? $config['proxy']['http'] : null) : (isset($config['proxy']['https']) ? $config['proxy']['https'] : null);
         parent::__construct(
-            $this->schema.'://cos.' . $this->region . '.myqcloud.com/',    // base url
+            $this->schema.'://cos.' . $this->region . '.'. (isset($config['host']) ? $config['host'] : 'myqcloud.com/') ,    // base url
             array('request.options' => array('timeout' => $this->timeout, 'connect_timeout' => $this->connect_timeout,
                                              'proxy'=> $httpProxy),
             )); // show curl verbose or not
